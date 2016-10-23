@@ -1,0 +1,25 @@
+{
+  "name": "tinyfun",
+  "version": "0.1.0",
+  "description": "Tiny functional ES6 library",
+  "main": "lib/index.js",
+  "repository": {
+    "url": "git@github.com:DveMac/tinyfun.git",
+    "type": "git"
+  },
+  "scripts": {
+    "test": "npm run build && node test.js | ./node_modules/.bin/faucet",
+    "test:watch": "./node_modules/.bin/nodemon --watch ./ --ignore lib --exec 'npm test'",
+    "build": "mkdir -p lib && node ./node_modules/es6-minify/es6-minify.js index.js > lib/index.js",
+    "report": "npm run build && gzip -c lib/index.js | wc -c"
+  },
+  "author": "@dvemac",
+  "license": "GPL",
+  "dependencies": {},
+  "devDependencies": {
+    "es6-minify": "ariya/es6-minify",
+    "faucet": "^0.0.1",
+    "nodemon": "^1.11.0",
+    "tape": "^4.6.2"
+  }
+}
