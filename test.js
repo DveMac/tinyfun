@@ -2,7 +2,7 @@ const test = require('tape')
 
 const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length,
     comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union,
-    intersection, difference, chain, xprod} = require('./lib/index')
+    intersection, difference, chain, xprod, split, path, groupBy } = require('./lib/index')
 
 const testObj = {
     name: 'jeff',
@@ -16,6 +16,17 @@ const getName = prop('name')
 const byNameDesc = comparator((a, b) => getName(a) > getName(b))
 const nameLenIsGreaterThan3 = compose(gt(3), length, getName)
 const nameLenIs3 = compose(equals(3), length, getName)
+
+
+test('gt', t => {
+    t.is(gt(1)(2), true)
+    t.end()
+})
+
+test('lt', t => {
+    t.is(lt(2)(1), true)
+    t.end()
+})
 
 test('identity', t => {
     t.is(identity(testObj.name), 'jeff')
@@ -125,6 +136,31 @@ test('chain', t => {
 
 test('xprod', t => {
     t.deepEqual(xprod([1,2])(['a','b']), [ [ 1, 'a' ], [ 2, 'a' ], [ 1, 'b' ], [ 2, 'b' ] ])
+    t.end()
+})
+
+test('split', t => {
+    t.deepEqual(split('.')('1.2.3.4'), ['1','2','3','4'])
+    t.end()
+})
+
+test('path', t => {
+    t.deepEqual(path(['location', 'lng'])(testObj), 0)
+    t.deepEqual(path(['location', 'nothere'])(testObj), undefined)
+    t.deepEqual(path(['location'])(testObj), testObj.location)
+    t.deepEqual(path(['blah', 'bleh'])(testObj), undefined)
+    t.end()
+})
+
+test('groupBy', t => {
+    t.deepEqual(groupBy(nameLenIs3)(testObjArr), {
+        'false': [testObjArr[2]],
+        'true': [testObjArr[0], testObjArr[1]]
+    })
+    t.deepEqual(groupBy(v => v > 5 ? 'MoreThan5' : 'LessThan5')([6,2,3,7,9,3,9,0,11]), {
+        LessThan5: [2,3,3,0],
+        MoreThan5: [6,7,9,9,11]
+    })
     t.end()
 })
 

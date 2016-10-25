@@ -6,23 +6,29 @@ const _isArray = Array.isArray, {
     filter: _filter,
     reduce: _reduce,
     map: _map,
-} = Array.prototype
+} = Array.prototype, {
+    split: _split,
+} = String.prototype
 
 const
+    // equals: is a equal to b
     // a → b → Boolean
     equals = a => b => a === b,
 
+    // gt: is a2 greater than a1
     // Ord a => a → a → Boolean
     gt = a1 => a2 => a1 < a2,
 
+    // gte: is a2 greater than or equal to a1
     // Ord a => a → a → Boolean
     gte = a1 => a2 => a1 <= a2,
 
+    // less than: is a2 less than a1
     // Ord a => a → a → Boolean
-    lt = a1 => a2 => a1 < a2,
+    lt = a1 => a2 => a1 > a2,
 
     // Ord a => a → a → Boolean
-    lte = a1 => a2 => a1 <= a2,
+    lte = a1 => a2 => a1 >= a2,
 
     // a → a
     identity = a => a,
@@ -104,8 +110,17 @@ const
     chain = f => compose(flatten, map(f)),
 
     // [a] → [b] → [[a,b]]
-    xprod = as => reduce((m, b) => concat(m, map(a => [a,b])(as)), [])
+    xprod = as => reduce((m, b) => concat(m, map(a => [a,b])(as)), []),
+
+    // (String | RegExp) → String → [String]
+    split = a => b => _split.call(b, a),
+
+    // [String] → {k: v} → v | Undefined
+    path = ss => o => reduce((m, s) => m && (s in m) ? m[s] : undefined, o)(ss),
+
+    // (a → String) → [a] → {String: [a]}
+    groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{})
 
 module.exports = { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, length,
     comparator, prop, keys, contains, concat, map, filter, flatten, sort, any, find, union,
-    intersection, difference, chain, xprod, compose }
+    intersection, difference, chain, xprod, compose, split, path, groupBy }

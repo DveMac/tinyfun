@@ -1,6 +1,23 @@
 # tinyfun
 
+Experimental ES6 based functional library.
+
 Related blog post: https://medium.com/@DveMac/using-es6-to-create-a-tiny-functional-library-fe8e4667045c
+
+### Installation
+
+```bash
+npm install --save tinyfun
+# OR
+yarn add tinyfun
+```
+
+### Building & testing
+
+```bash
+npm test
+npm run build
+```
 
 ### API
 
@@ -102,4 +119,12 @@ chain = f => compose(flatten, map(f)),
 // [a] → [b] → [[a,b]]
 xprod = as => reduce((m, b) => concat(m, map(a => [a,b])(as)), [])
 
+// (String | RegExp) → String → [String]
+split = a => b => _split.call(b, a),
+
+// [String] → {k: v} → v | Undefined
+path = ss => o => reduce((m, s) => m && (s in m) ? m[s] : undefined, o)(ss),
+
+// (a → String) → [a] → {String: [a]}
+groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{})
 ```
