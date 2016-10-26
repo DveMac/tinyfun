@@ -1,7 +1,7 @@
 const test = require('tape')
 
 const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length,
-    comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union,
+    comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union, reduce,
     intersection, difference, chain, xprod, split, path, groupBy } = require('./lib/index')
 
 const testObj = {
@@ -86,6 +86,13 @@ test('concat', t => {
 
 test('map', t => {
     t.deepEqual(map(x => x*2)([1,2,3]), [2,4,6])
+    t.end()
+})
+
+test('reduce', t => {
+    t.deepEqual(
+        reduce((m, o) => (m[o.id] = o.name) && m, {})(testObjArr),
+        { 1: 'dog', 2: 'cat', 3: 'horse' })
     t.end()
 })
 

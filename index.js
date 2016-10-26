@@ -123,4 +123,4 @@ const
 
 module.exports = { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, length,
     comparator, prop, keys, contains, concat, map, filter, flatten, sort, any, find, union,
-    intersection, difference, chain, xprod, compose, split, path, groupBy }
+    reduce, intersection, difference, chain, xprod, compose, split, path, groupBy }
