@@ -1,6 +1,6 @@
 {
   "name": "tinyfun",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Tiny functional ES6 library",
   "main": "lib/index.js",
   "repository": {
@@ -13,6 +13,7 @@
     "build": "mkdir -p lib && node ./node_modules/es6-minify/es6-minify.js index.js > lib/index.js",
     "report": "npm run build && gzip -c lib/index.js | wc -c"
   },
+  "keywords": ["functional", "library", "tiny", "small", "programming", "ES6", "compose", "reduce", "map"],
   "author": "@dvemac",
   "license": "GPL",
   "dependencies": {},
