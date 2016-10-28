@@ -1,6 +1,6 @@
 {
   "name": "tinyfun",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Tiny functional ES6 library",
   "main": "lib/index.js",
   "repository": {

@@ -19,6 +19,19 @@ npm test
 npm run build
 ```
 
+### Usage Example
+
+```
+import { compose, filter, prop, sort, comparator, equals, length } from 'tinyfun'
+
+const getName = prop('name')
+const byNameDesc = comparator((a, b) => getName(a) > getName(b))
+const nameLenIs3 = compose(equals(3), length, getName)
+
+const name = getName({ name: 'dog' })
+const sorted = sort(byNameDesc)([ /* some things */ ])
+```
+
 ### API
 
 ```js
