@@ -1,6 +1,6 @@
 const test = require('tape')
 
-const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length,
+const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length, slice,
     comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union, reduce,
     intersection, difference, chain, xprod, split, path, groupBy } = require('./lib/index')
 
@@ -53,6 +53,11 @@ test('last', t => {
 
 test('tail', t => {
     t.deepEqual(tail([1,2,3]), [2, 3])
+    t.end()
+})
+
+test('slice', t => {
+    t.deepEqual(slice(1, 2)([1,2,3]), [2])
     t.end()
 })
 
