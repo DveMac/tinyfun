@@ -122,5 +122,5 @@ const
     groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{})
 
 module.exports = { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, length, slice,
-    comparator, prop, keys, contains, concat, map, filter, flatten, sort, any, find, union,
+    comparator, prop, keys, contains, concat, map, filter, flatten, sort, any, find, union, values,
     reduce, intersection, difference, chain, xprod, compose, split, path, groupBy }
