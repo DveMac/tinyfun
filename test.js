@@ -2,7 +2,7 @@ const test = require('tape')
 
 const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length, slice,
     comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union, reduce, values,
-    intersection, difference, chain, xprod, split, path, groupBy } = require('./lib/index')
+    intersection, difference, chain, xprod, split, path, groupBy, replace } = require('./lib/index')
 
 const testObj = {
     name: 'jeff',
@@ -180,4 +180,11 @@ test('groupBy', t => {
     })
     t.end()
 })
+
+test('replace', t => {
+    t.deepEqual(replace('cat', 'dog')('catdog'), 'dogdog')
+    t.deepEqual(replace(/[0-9]+/img, 'N')('c1at2do4g'), 'cNatNdoNg')
+    t.end()
+})
+
 

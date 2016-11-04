@@ -8,6 +8,7 @@ const _isArray = Array.isArray, {
     map: _map,
 } = Array.prototype, {
     split: _split,
+    replace: _replace,
 } = String.prototype
 
 const
@@ -119,8 +120,11 @@ const
     path = ss => o => reduce((m, s) => m && (s in m) ? m[s] : undefined, o)(ss),
 
     // (a → String) → [a] → {String: [a]}
-    groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{})
+    groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{}),
+
+    // RegExp|String → String → String → String
+    replace = (p, r) => s => _replace.call(s, p, r)
 
 module.exports = { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, length, slice,
     comparator, prop, keys, contains, concat, map, filter, flatten, sort, any, find, union, values,
-    reduce, intersection, difference, chain, xprod, compose, split, path, groupBy }
+    reduce, intersection, difference, chain, xprod, compose, split, path, groupBy, replace }
