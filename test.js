@@ -2,7 +2,7 @@ const test = require('tape')
 
 const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length, slice,
     comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union, reduce, values,
-    intersection, difference, chain, xprod, split, path, groupBy, replace } = require('./lib/index')
+    intersection, difference, chain, xprod, split, path, groupBy, replace, pick } = require('./lib/index')
 
 const testObj = {
     name: 'jeff',
@@ -187,4 +187,9 @@ test('replace', t => {
     t.end()
 })
 
-
+test('pick', t => {
+    t.deepEqual(pick(['name', 'animal'])(testObj), { animal: 'horse', name: 'jeff' })
+    t.deepEqual(pick(['empt', 'nul', 'missing'])({ empt: undefined, nul: null }),
+        { empt: undefined, nul: null })
+    t.end()
+})

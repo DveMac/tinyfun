@@ -140,4 +140,10 @@ path = ss => o => reduce((m, s) => m && (s in m) ? m[s] : undefined, o)(ss),
 
 // (a → String) → [a] → {String: [a]}
 groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{})
+
+// RegExp|String → String → String → String
+replace = (p, r) => s => _replace.call(s, p, r),
+
+// [k] → {k: v} → {k: v}
+pick = ks => o => reduce((m, k) => k in o ? (~(m[k] = o[k]) && m) : m , {})(ks)
 ```

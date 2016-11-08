@@ -123,8 +123,11 @@ const
     groupBy = (f, _k) => reduce((m, a) => (_k = ('' + f(a))) && (m[_k] = concat(m[_k] || [], [a])) && m ,{}),
 
     // RegExp|String → String → String → String
-    replace = (p, r) => s => _replace.call(s, p, r)
+    replace = (p, r) => s => _replace.call(s, p, r),
+
+    // [k] → {k: v} → {k: v}
+    pick = ks => o => reduce((m, k) => k in o ? (~(m[k] = o[k]) && m) : m , {})(ks)
 
 module.exports = { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, length, slice,
     comparator, prop, keys, contains, concat, map, filter, flatten, sort, any, find, union, values,
-    reduce, intersection, difference, chain, xprod, compose, split, path, groupBy, replace }
+    reduce, intersection, difference, chain, xprod, compose, split, path, groupBy, replace, pick }
