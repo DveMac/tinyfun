@@ -1,6 +1,6 @@
 {
   "name": "tinyfun",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Tiny functional ES6 library",
   "main": "lib/index.js",
   "repository": {
@@ -10,14 +10,26 @@
   "scripts": {
     "test": "npm run build && node test.js | ./node_modules/.bin/faucet",
     "test:watch": "./node_modules/.bin/nodemon --watch ./ --ignore lib --exec 'npm test'",
-    "build": "mkdir -p lib && cp index.js lib/index.js",
+    "build": "mkdir -p lib && babel index.js > lib/index.js",
     "report": "npm run build && gzip -c lib/index.js | wc -c"
   },
-  "keywords": ["functional", "library", "tiny", "small", "programming", "ES6", "compose", "reduce", "map"],
+  "keywords": [
+    "functional",
+    "library",
+    "tiny",
+    "small",
+    "programming",
+    "ES6",
+    "compose",
+    "reduce",
+    "map"
+  ],
   "author": "@dvemac",
   "license": "GPL",
   "dependencies": {},
   "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-env": "^1.2.2",
     "es6-minify": "ariya/es6-minify",
     "faucet": "^0.0.1",
     "nodemon": "^1.11.0",
