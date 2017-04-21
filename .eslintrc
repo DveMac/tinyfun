@@ -28,9 +28,7 @@
 		"strict": [2, "never"],
 		"semi": ["error", "never"],
 		"no-unexpected-multiline": "error",
-		"no-debugger": 2,
-        "react/jsx-uses-vars": 1,
-        "react/jsx-uses-react": "error"
+		"no-debugger": 2
 	},
 	"ecmaFeatures": {
 		"destructuring": true,
@@ -39,14 +37,8 @@
 		"classes": true,
 		"modules": true
 	},
-	"parserOptions": {
-		"ecmaFeatures": {
-			"jsx": true
-		}
-	},
 	"parser": "babel-eslint",
 	"plugins": [
-		"react",
         "flowtype"
 	]
 }

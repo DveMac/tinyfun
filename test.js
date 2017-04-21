@@ -1,8 +1,8 @@
 const test = require('tape')
 
-const { equals, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length, slice,
+const { eq, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length, slice,
     comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union, reduce, values,
-    intersection, difference, chain, xprod, split, path, groupBy, replace, pick } = require('./lib/index')
+    intersection, difference, chain, xprod, split, path, groupBy, replace, pick } = require('./index')
 
 const testObj = {
     name: 'jeff',
@@ -15,7 +15,7 @@ const testObjArr = [{ id:1, name: 'dog' }, {id:2, name: 'cat'}, {id:3, name: 'ho
 const getName = prop('name')
 const byNameDesc = comparator((a, b) => getName(a) > getName(b))
 const nameLenIsGreaterThan3 = compose(gt(3), length, getName)
-const nameLenIs3 = compose(equals(3), length, getName)
+const nameLenIs3 = compose(eq(3), length, getName)
 
 
 test('gt', t => {
