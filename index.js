@@ -11,7 +11,7 @@ type Sort<A> = (f: (a: A, b: A) => number) => (as: Array<A>) => Array<A>
 type Map<A, B> = (f: (A) => B) => (as: Array<A>, context?: any) => Array<B>
 type Filter<T> = (f: (value: T, index: number, array: Array<T>) => boolean) => (as: Array<T>) => Array<T>
 type Comparator<A,B> = (f: (a: A, a: B) => boolean) => (a: A, b: B) => number
-type Reduce<M, P> = (f: (M, P) => M, initial?: M) => <P>(as: Array<P>) => M
+type Reduce<M, P> = (f: (accum: M, val: P, idx: ?number, source: ?Array<P>) => M, initial?: M) => <P>(as: Array<P>) => M
 type Diff<T> = (xs: Array<T>, ys: Array<T>) => Array<T>
 type Any<A> = (f: (A) => boolean) => (as: Array<A>) => boolean
 type Find<A> = <A>(f: (A) => boolean) => (as: Array<A>) => ?A
@@ -49,7 +49,6 @@ declare type Tinyfun = {
     split: (a: string | RegExp) => (b: string) => Array<string>,
     path: (ss: Array<string>) => (o: Object) => any,
     replace: (p: string | RegExp, r: string) => (s: string) => string,
-    // (a → String) → [a] → {String: [a]}
     groupBy: <A>(f: (A) => string) => (as: Array<A>) => $ObjMap<string, A>,
     pick: (ks: Array<string>) => (o: Object) => Object,
 }
@@ -64,6 +63,7 @@ const reduce = (f, initial) => (as) => _rd.call(as, f, initial)
 const flatten = reduce((a, b) => concat(a, _isArray(b) ? flatten(b) : b), [])
 const uniq = as => [...new Set(as)]
 const filter = f => as => _flt.call(as, f)
+const chain = f => compose(flatten, map(f))
 
 const tf: Tinyfun = {
 
@@ -143,7 +143,10 @@ const tf: Tinyfun = {
     uniq: uniq,
 
     // [*] → [*] → [*]
-    intersection: (xs, ys) => { const zs = new Set(ys); return filter(x => zs.has(x))(uniq(xs)) },
+    intersection: (xs, ys) => {
+        const zs = new Set(ys)
+        return filter(x => zs.has(x))(uniq(xs))
+    },
 
     // ((y → z), (x → y), …, (o → p), ((a, b, …, n) → o)) → ((a, b, …, n) → z)  WTF!
     compose: compose,
@@ -152,16 +155,20 @@ const tf: Tinyfun = {
     any: f => compose(tf.gt(0), length, filter(f)),
 
     // (a → Boolean) → [a] → a | undefined
-    find: <A>(f: (A) => boolean) => reduce((m, v) => m || (f(v) ? v : m)),
+    find: f => reduce((m, v) => m || (f(v) ? v : m)),
 
     // [*] → [*] → [*]
     union: compose(uniq, concat),
 
     // [*] → [*] → [*]
-    difference: (xs, ys) => { const zs = new Set(ys); return filter(x => !!zs && !zs.has(x))(uniq(xs)) },
+    difference: (xs, ys) => {
+        const zs = new Set(ys)
+        return filter(x => !!zs && !zs.has(x))(uniq(xs))
+    },
 
-    // Chain m => (a → m b) → m a → m b // also known as flatMap
-    chain: f => compose(flatten, map(f)),
+    // Chain m => (a → m b) → m a → m b
+    chain: chain,
+    flatMap: chain,
 
     // [a] → [b] → [[a,b]]
     xprod: as => reduce((m, b) => concat(m, map(a => [a,b])(as)), []),
@@ -176,10 +183,17 @@ const tf: Tinyfun = {
     replace: (p, r) => s => _rep.call(s, p, r),
 
     // (a → String) → [a] → {String: [a]}
-    groupBy: f => reduce((m, a) => { const _k = (String(f(a))); m[_k] = concat(m[_k] || [], [a]); return m; },{}),
+    groupBy: f => reduce((m, a) => {
+        const _k = (String(f(a)))
+        m[_k] = concat(m[_k] || [], [a])
+        return m
+    }, {}),
 
     // [k] → {k: v} → {k: v}
-    pick: ks => o => reduce((m, k) => { if (k in o) m[k] = o[k]; return m; }, {})(ks),
+    pick: ks => o => reduce((m, k) => {
+        if (k in o) m[k] = o[k]
+        return m
+    }, {})(ks),
 
 }
 
