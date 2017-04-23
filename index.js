@@ -3,56 +3,6 @@ const _isArray = Array.isArray,
     { slice: _sl, includes: _inc, concat: _cc, sort: _st, filter: _flt, reduce: _rd, map: _map } = Array.prototype,
     { split: _s, replace: _rep } = String.prototype
 
-type NestedArray<T> = Array<T | NestedArray<T>>
-type Comparable<F> = (a1: F) => (a2: F) => boolean
-type Identity<A> = (a: A) => A
-type Slice<A> = (s: number, e?: number) => (as: Array<A>) => Array<A>
-type Sort<A> = (f: (a: A, b: A) => number) => (as: Array<A>) => Array<A>
-type Map<A, B> = (f: (A) => B) => (as: Array<A>, context?: any) => Array<B>
-type Filter<T> = (f: (value: T, index: number, array: Array<T>) => boolean) => (as: Array<T>) => Array<T>
-type Comparator<A,B> = (f: (a: A, a: B) => boolean) => (a: A, b: B) => number
-type Reduce<M, P> = (f: (accum: M, val: P, idx: ?number, source: ?Array<P>) => M, initial?: M) => <P>(as: Array<P>) => M
-type Diff<T> = (xs: Array<T>, ys: Array<T>) => Array<T>
-type Any<A> = (f: (A) => boolean) => (as: Array<A>) => boolean
-type Find<A> = <A>(f: (A) => boolean) => (as: Array<A>) => ?A
-type Compose = (f: Function, ...fs: Array<Function> ) => Function
-
-declare type Tinyfun = {
-    eq: Comparable<*>,
-    gt: Comparable<*>,
-    gte: Comparable<*>,
-    lt: Comparable<*>,
-    lte: Comparable<*>,
-    identity: Identity<*>,
-    prop: (s: string) => (o: Object) => any,
-    length: (as: Array<*>) => number,
-    slice: Slice<*>,
-    compose: Compose,
-    head: <A>(as: Array<A>) => A,
-    head: (as: string) => string,
-    contains: <T>(a: T) => (as: Array<T>) => boolean,
-    concat: (...as: Array<*>) => Array<*>,
-    sort: Sort<*>,
-    map: Map<*, *>,
-    filter: Filter<*>,
-    comparator: Comparator<*, *>,
-    reduce: Reduce<*, *>,
-    values: (o: Object) => Array<*>,
-    flatten: (a: Array<*>) => Array<number | string | Object>,
-    intersection: Diff<*>,
-    uniq: (as: Array<*>) => Array<*>,
-    any: Any<*>,
-    find: Find<*>,
-    difference: Diff<*>,
-    chain: (f: (a: any) => any) => (as: Array<any>) => Array<number | string | Object>,
-    xprod: <A, B>(as: Array<A>) => (bs: Array<B>) => Array<[A, B]>,
-    split: (a: string | RegExp) => (b: string) => Array<string>,
-    path: (ss: Array<string>) => (o: Object) => any,
-    replace: (p: string | RegExp, r: string) => (s: string) => string,
-    groupBy: <A>(f: (A) => string) => (as: Array<A>) => $ObjMap<string, A>,
-    pick: (ks: Array<string>) => (o: Object) => Object,
-}
-
 const head = as => as[0]
 const slice = (s, e) => as => _sl.call(as, s, e)
 const length = as => as.length
