@@ -25,6 +25,7 @@ declare type Tinyfun = {
     length: (as: Array<*>) => number,
     slice: Slice<*>,
     compose: Compose,
+    keys: (o: Object) => Array<string>,
     head: <A>(as: Array<A>) => A,
     head: (as: string) => string,
     contains: <T>(a: T) => (as: Array<T>) => boolean,
