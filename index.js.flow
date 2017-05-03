@@ -4,7 +4,7 @@ type Comparable<F> = (a1: F) => (a2: F) => boolean
 type Identity<A> = (a: A) => A
 type Slice<A> = (s: number, e: ?number) => (as: Array<A>) => Array<A>
 type Sort<A> = (f: (a: A, b: A) => number) => (as: Array<A>) => Array<A>
-type Map<A, B> = (f: (A) => B) => (as: Array<A>, context: ?any) => Array<B>
+type Map<A, B> = (f: (a: A, idx: number, source: ?Array<A>) => B) => (as: Array<A>, context: ?any) => Array<B>
 type Filter<T> = (f: (value: T, index: number, array: Array<T>) => boolean) => (as: Array<T>) => Array<T>
 type Comparator<A,B> = (f: (a: A, a: B) => boolean) => (a: A, b: B) => number
 type Reduce<M, P> = (f: (accum: M, val: P, idx: ?number, source: ?Array<P>) => M, initial: ?M) => <P>(as: Array<P>) => M
