@@ -1,12 +1,13 @@
 /* @flow */
+
 const _isArray = Array.isArray,
     { slice: _sl, includes: _inc, concat: _cc, sort: _st, filter: _flt, reduce: _rd, map: _map } = Array.prototype,
     { split: _s, replace: _rep } = String.prototype
 
 const head = as => as[0]
-const slice = (s, e) => as => _sl.call(as, s, e)
+const slice = (s, e) => as => e ? _sl.call(as, s, e) : _sl.call(as, s)
 const length = as => as.length
-const compose: Compose = (f, ...fs) => fs.length ? (...args) => f(compose(...fs)(...args)) : f
+const compose = (f, ...fs) => fs.length ? (...args) => f(compose(...fs)(...args)) : f
 const concat = (...as) => _cc.apply([], as)
 const map = f => (as, context = null) => _map.call(as, f, context)
 const reduce = (f, initial) => (as) => _rd.call(as, f, initial)
