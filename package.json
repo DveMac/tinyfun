@@ -1,6 +1,6 @@
 {
   "name": "tinyfun",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Tiny functional ES6 library",
   "main": "lib/index.js",
   "repository": {
@@ -36,6 +36,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-babili": "^0.0.12",
     "babel-preset-env": "^1.2.2",
+    "babel-preset-es2015": "^6.24.1",
     "es6-minify": "ariya/es6-minify",
     "eslint": "^3.19.0",
     "faucet": "^0.0.1",
