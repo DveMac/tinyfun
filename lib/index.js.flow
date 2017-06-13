@@ -11,7 +11,7 @@ type Reduce<M, P> = (f: (accum: M, val: P, idx: ?number, source: ?Array<P>) => M
 type Diff<T> = (xs: Array<T>, ys: Array<T>) => Array<T>
 type Any<A> = (f: (A) => boolean) => (as: Array<A>) => boolean
 type Find<A> = (f: (A) => boolean) => (as: Array<A>) => ?A
-type Path<A> = (ss: Array<$Keys<A>>, def: any) => (o: A) => any
+type Path<A> = (ss: Array<$Keys<A>>) => (o: A, def: any) => any
 type Compose = (f: Function, ...fs: Array<Function> ) => Function
 
 declare type Tinyfun = {
