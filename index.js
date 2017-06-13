@@ -128,7 +128,7 @@ const tf: Tinyfun = {
     split: a => b => _s.call(b, a),
 
     // [String] → {k: v} → v | Undefined
-    path: ss => o => reduce((m, s) => m && (s in m) ? m[s] : undefined, o)(ss),
+    path: (ss, def) => o => reduce((m, s) => m && (s in m) ? m[s] : def, o)(ss),
 
     // RegExp|String → String → String → String
     replace: (p, r) => s => _rep.call(s, p, r),

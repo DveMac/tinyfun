@@ -5,6 +5,5 @@
 [include]
 
 [libs]
-./index.js.flow
 
 [options]
