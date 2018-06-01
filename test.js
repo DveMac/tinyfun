@@ -2,7 +2,7 @@ const test = require('tape')
 
 const { eq, lt, lte, gt, gte, identity, head, init, last, tail, uniq, prop, compose, length, slice,
     comparator, keys, contains, concat, map, filter, flatten, sort, any, find, union, reduce, values,
-    intersection, difference, chain, xprod, split, path, groupBy, replace, pick } = require('./index')
+    intersection, difference, chain, xprod, split, path, groupBy, replace, pick, assoc } = require('./index')
 
 const testObj = {
     name: 'jeff',
@@ -17,14 +17,15 @@ const byNameDesc = comparator((a, b) => getName(a) > getName(b))
 const nameLenIsGreaterThan3 = compose(gt(3), length, getName)
 const nameLenIs3 = compose(eq(3), length, getName)
 
-
 test('gt', t => {
+    t.is(gt(1, 2), true)
     t.is(gt(1)(2), true)
     t.end()
 })
 
 test('lt', t => {
     t.is(lt(2)(1), true)
+    t.is(lt(2, 1), true)
     t.end()
 })
 
@@ -57,6 +58,7 @@ test('tail', t => {
 })
 
 test('slice', t => {
+    t.deepEqual(slice(1, 2, [1,2,3]), [2])
     t.deepEqual(slice(1, 2)([1,2,3]), [2])
     t.end()
 })
@@ -72,8 +74,10 @@ test('uniq', t => {
 })
 
 test('prop', t => {
+    t.is(prop('name', testObj), 'jeff')
     t.is(prop('name')(testObj), 'jeff')
     t.deepEqual(prop('location')(testObj), testObj.location)
+    t.deepEqual(prop('location', testObj), testObj.location)
     t.end()
 })
 
@@ -85,17 +89,22 @@ test('keys', t => {
 
 test('contains', t => {
     t.is(contains(3)([1,2,3,4]), true)
+    t.is(contains(3, [1,2,3,4]), true)
     t.is(contains(7)([1,2,3,4]), false)
+    t.is(contains(7, [1,2,3,4]), false)
     t.end()
 })
 
 test('concat', t => {
-    t.deepEqual(concat([1],[2],[2,3,4]), [1,2,2,3,4])
+    t.deepEqual(concat([2],[2]), [2,2])
+    t.deepEqual(concat([1],[2,3,4]), [1,2,3,4])
+    t.deepEqual(concat([1])([2,3,4]), [1,2,3,4])
     t.end()
 })
 
 test('map', t => {
     t.deepEqual(map(x => x*2)([1,2,3]), [2,4,6])
+    t.deepEqual(map(x => x*2, [1,2,3]), [2,4,6])
     t.end()
 })
 
@@ -107,6 +116,7 @@ test('reduce', t => {
 })
 
 test('filter', t => {
+    t.deepEqual(filter(nameLenIsGreaterThan3, testObjArr), [testObjArr[2]])
     t.deepEqual(filter(nameLenIsGreaterThan3)(testObjArr), [testObjArr[2]])
     t.end()
 })
@@ -117,27 +127,25 @@ test('flatten', t => {
 })
 
 test('sort', t => {
+    t.deepEqual(sort(byNameDesc, testObjArr), [testObjArr[1], testObjArr[0], testObjArr[2]])
     t.deepEqual(sort(byNameDesc)(testObjArr), [testObjArr[1], testObjArr[0], testObjArr[2]])
     t.end()
 })
 
-test('any', t => {
-    t.deepEqual(any(nameLenIsGreaterThan3)(testObjArr), true)
-    t.end()
-})
-
 test('find', t => {
+    t.deepEqual(find(nameLenIs3, testObjArr), testObjArr[0])
     t.deepEqual(find(nameLenIs3)(testObjArr), testObjArr[0])
     t.end()
 })
 
 test('union', t => {
-    t.deepEqual(union([1,2,3,4],[3,4,5,6],[6,7,8]), [1,2,3,4,5,6,7,8])
+    t.deepEqual(union([3,4,5,6],[6,7,8]), [3,4,5,6,7,8])
     t.end()
 })
 
 test('intersection', t => {
     t.deepEqual(intersection([1,2,3,4],[3,4,5,6]), [3,4])
+    t.deepEqual(intersection([1,2,3,4])([3,4,5,6]), [3,4])
     t.end()
 })
 
@@ -162,9 +170,13 @@ test('split', t => {
 })
 
 test('path', t => {
+    t.deepEqual(path(['location', 'lng'], testObj), 0)
     t.deepEqual(path(['location', 'lng'])(testObj), 0)
-    t.deepEqual(path(['location', 'nothere'])(testObj), undefined)
+
+    t.deepEqual(path(['location'], testObj), testObj.location)
     t.deepEqual(path(['location'])(testObj), testObj.location)
+
+    t.deepEqual(path(['blah', 'bleh'], testObj), undefined)
     t.deepEqual(path(['blah', 'bleh'])(testObj), undefined)
     t.end()
 })
@@ -182,7 +194,10 @@ test('groupBy', t => {
 })
 
 test('replace', t => {
+    t.deepEqual(replace('cat')('dog')('catdog'), 'dogdog')
     t.deepEqual(replace('cat', 'dog')('catdog'), 'dogdog')
+    t.deepEqual(replace('cat', 'dog', 'catdog'), 'dogdog')
+
     t.deepEqual(replace(/[0-9]+/img, 'N')('c1at2do4g'), 'cNatNdoNg')
     t.end()
 })
@@ -191,5 +206,11 @@ test('pick', t => {
     t.deepEqual(pick(['name', 'animal'])(testObj), { animal: 'horse', name: 'jeff' })
     t.deepEqual(pick(['empt', 'nul', 'missing'])({ empt: undefined, nul: null }),
         { empt: undefined, nul: null })
+    t.end()
+})
+
+test('assoc', t => {
+    t.deepEqual(assoc('age', 23, testObj), Object.assign({ age: 23 }, testObj))
+    t.deepEqual(assoc('age', 23)(testObj), Object.assign({ age: 23 }, testObj))
     t.end()
 })
